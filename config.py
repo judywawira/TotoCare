@@ -1,3 +1,4 @@
+from flask_pymongo import PyMongo
 from pymongo import MongoClient
 
 WTF_CSRF_ENABLED = True
@@ -10,3 +11,4 @@ USERS_COLLECTION = DATABASE.users
 SETTINGS_COLLECTION = DATABASE.settings
 
 DEBUG = True
+

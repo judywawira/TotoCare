@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form action="" method="POST" name="form">
+            <div class="col-md-4 col-md-offset-4">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    <label class="control-label" for="firstname">First Name:</label>
+                    {{ form.firstname }}
+                </div>  
+                 <div class="form-group">
+                    <label class="control-label" for="middlename">Middle Name:</label>
+                    {{ form.middlename }}
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="lastname">Last Name:</label>
+                    {{ form.lastname }}
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="studentid">Student ID:</label>
+                    {{ form.studentid }}
+                </div>    
+                <div class="form-group">
+                    <label class="control-label" for="DOB">Date of Birth:</label>
+                    {{ form.dt(class="dtpick") }}
+                </div> 
+                <div class="form-group">
+                    <label class="control-label" for="address1">Address 1:</label>
+                    {{ form.address1 }}
+                </div>
+                 <div class="form-group">
+                    <label class="control-label" for="address2">Address 2:</label>
+                    {{ form.address2 }}
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="zipcode">Zip Code:</label>
+                    {{ form.zipcode }}
+                </div>
+                 <div class="form-group">
+                    <label class="control-label" for="state">State:</label>
+                    {{ form.state }}
+                </div>
+                <button class="btn btn-default" type="submit">Submit</button>    
+        </form>
+
+{% endblock %}
