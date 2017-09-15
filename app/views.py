@@ -23,7 +23,7 @@ def login():
             user_obj = User(user['_id'])
             login_user(user_obj)
             flash("Logged in successfully!", category='success')
-            return redirect(request.args.get("next") or url_for("write"))
+            return redirect(request.args.get("next") or url_for("search"))
         flash("Wrong username or password!", category='error')
     return render_template('login.html', title='login', form=form)    
 
@@ -114,6 +114,11 @@ def search():
                 """means we have students matched - so render the student ID page """
                 print(students)
                 return render_template('search.html',form=form, students= students , count = count)
+            else:
+                """ zer students to match"""
+                flash("0 students found!", category='info')
+                return render_template('search.html',form=form, students= students , count = count)
+                
 
 @app.route('/locations',methods=['GET'])
 @login_required
