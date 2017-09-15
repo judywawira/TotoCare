@@ -1,9 +1,19 @@
-{% extends "base.html" %}
-{% block content %}
-        <h4>Welcome to the TotoCare suite of tools to help manage vulnerable children.
-                Please login or request account to continue
-        </h4>
+{% extends "base.html" %} {% block content %}
+
+<div class="col-md-8 col-md-offset-2">
+        <div>
+
+                <h4>Welcome to the TotoCare suite of tools to help manage vulnerable children. Please login or request account
+                        to continue
+                </h4>
+        </div>
+
+        <div>
+                <img class="image-fluid" src={{ url_for( 'static', filename='Elimu.jpg')}} width="700" height="500">
+
+        </div>
+
+</div>
+
+
 {% endblock %}
-
-
-    

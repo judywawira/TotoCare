@@ -38,3 +38,5 @@ class IncidentForm(Form):
     action = StringField('Action Taken :')
     others = StringField('Others involved in the incident :')
     
+class SearchForm(Form):
+    search = StringField('txtSearch')

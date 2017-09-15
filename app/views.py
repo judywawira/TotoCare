@@ -7,22 +7,8 @@ from flask import request, redirect, render_template, url_for, flash
 from flask.ext.login import login_user, logout_user, login_required
 from flask import jsonify
 
-from .forms import LoginForm, StudentRegistrationForm , IncidentForm
+from .forms import LoginForm, StudentRegistrationForm , IncidentForm, SearchForm
 from .user import User
-
-#Describe Minor problem behaviour
-minor = ['Defiance','Disrespect','Physical Contact','Tardy','Inappropriate Language','Property Misues',
-'Dress Code','Electronic Violation','Other']
-
-major = ["Defiance",'Disrespect','Abusive Language','Harassment','Fighting','Electronic Violation','Property Damage',
-'Lying/Cheating','Dress Code','Inappropriate display of affection','Other']
-
-motivation = ['Peer attention','Adult attention','Item/Activity avoid','Peer attention','Adult attention','Item/Activity']
-
-action_taken = ['Time out/detention','Conference with student','Loss of privileges','Parent contact','Individualized instruction',
-'In-school suspension','Out-of-school suspension','Action pending','Other']
-
-others_involved = ['None','Peers','Teacher','Staff','Subtitute','Unknown','Other']
 
 @app.route('/')
 def home():
@@ -68,8 +54,10 @@ def newstudent():
 @login_required
 def view_teacher():
     teachers = mongo2.db.teachers.find()
+
     return render_template('teacher.html',title='List of teachers',
     teachers = teachers)
+
 
 @app.route('/incident',methods=['GET'])
 @login_required
@@ -80,15 +68,15 @@ def incident_report():
 
     return render_template('incident.html', title = 'Incident Report',
         locations=locations,
-        minor = minor,
-        major = major,form = form)
+        form = form)
+
 
 @app.route('/incident',methods=['POST'])
 @login_required
 def view_incident_report():
     form = IncidentForm()
     if request.method == 'POST':
-        location = form.location.data
+        location = request.form['location']
         minor = request.form.getlist('minor')
         major = request.form.getlist('major')
         motivation = request.form.getlist('motivation')
@@ -104,6 +92,28 @@ def view_incident_report():
             'others_involved':others
         })
     return redirect('/')
+
+@app.route('/search',methods=['GET'])
+@login_required
+def load_searchform():
+    form = SearchForm()
+    return render_template('search.html',form=form)
+
+
+@app.route('/search',methods=['POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if request.method == 'POST':
+        searchterm = request.form['txtSearch']
+        if len(searchterm) > 0:
+            students = mongo2.db.students.find({ "$or": [{ 'studentid': searchterm } , { 'firstname' : searchterm } , { 'middlename': searchterm } ,{ 'lastname' : searchterm }  ] })
+            count = students.count()
+            students = list(students)
+            if count > 0 :
+                """means we have students matched - so render the student ID page """
+                print(students)
+                return render_template('search.html',form=form, students= students , count = count)
 
 @app.route('/locations',methods=['GET'])
 @login_required

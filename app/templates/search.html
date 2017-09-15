@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block content %}
+
+<form action="" method="POST" name="form">
+    <div class="col-md-4 col-md-offset-4">
+        <br>
+        <div>
+            Search student by Name or ID
+        </div>
+        <br>
+
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search by name or ID" name='txtSearch' id="txtSearch" />
+            <div class="input-group-btn">
+                <button class="btn btn-primary" type="submit">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+<div class="col-md-4 col-md-offset-4">
+    <div>
+        <h4>Result count : {{count}} matching result </h4>
+    </div>
+    <div class="list-group">
+        {% for student in students %}
+        <a href="student/student_id={{student.studentid}}" class="list-group-item list-group-item-action">{{student.studentid}} : | 
+          {{student.firstname}} {{student.middlename}}  {{student.lastname}}</a> {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
