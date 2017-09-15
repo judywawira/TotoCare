@@ -38,6 +38,18 @@ def show_student_detail(student_id):
 
     count = student_incidents.count()
 
+    #format the student incidences better 
+    """
+    allincidences = []
+    for student_incident in student_incidents:
+        print(student_incident)
+        mydict = {}
+        mydict['incident_date'] = student_incident.incident_date
+        allincidences.append(mydict)
+        
+    print allincidences
+    """
+    
     return render_template('summary.html',title="Student Summary",
     student_id = student_id,demographics = demographics[0],student_incidents = student_incidents,count = count)
 
