@@ -25,13 +25,82 @@ def login():
             flash("Logged in successfully!", category='success')
             return redirect(request.args.get("next") or url_for("search"))
         flash("Wrong username or password!", category='error')
-    return render_template('login.html', title='login', form=form)    
+    return render_template('login.html', title='login', form=form)   
 
+@app.route('/student/<student_id>',methods=['GET'])
+@login_required
+def show_student_detail(student_id): 
+    #search for the student metadata 
+    demographics = list(mongo2.db.students.find({'studentid':student_id}))
+
+    #search for incidents by student - the student ID MUST be unique
+    student_incidents = mongo2.db.incident.find({'student_id':student_id})
+
+    count = student_incidents.count()
+
+    return render_template('summary.html',title="Student Summary",
+    student_id = student_id,demographics = demographics[0],student_incidents = student_incidents,count = count)
+
+@app.route('/student/<student_id>?',methods=['POST','GET'])
+@login_required
+def new_student_incident(student_id):
+    if request.method == 'POST':
+        print ('fuck')
+    print (request.method)
+    #redirect to new form for creating an incident for student
+    print('ha!' + student_id)
+    demographics = list(mongo2.db.students.find({'studentid':student_id}))
+    redirect('/student/incident/' +  student_id)
+
+@app.route('/student/incident/<student_id>',methods=['GET','POST'])
+@login_required
+def incident_report_by_id_long(student_id):
+    form = IncidentForm()
+
+    locations = mongo2.db.locations.find()
+    teachers = mongo2.db.teachers.find()
+    demographics = list(mongo2.db.students.find({'studentid':student_id}))
+        
+    count = (mongo2.db.incident.find({'studentid':student_id})).count()
+
+    return render_template('incident.html', title = 'Incident Report',
+        locations=locations, teachers = teachers,
+        demographics = demographics[0],count = count,
+        form = form)
+
+@app.route('/incident/<student_id>',methods=['GET'])
+@login_required
+def incident_report_byid(student_id):
+    form = IncidentForm()
+
+    locations = mongo2.db.locations.find()
+    teachers = mongo2.db.teachers.find()
+    demographics = list(mongo2.db.students.find({'studentid':student_id}))
+
+    return render_template('incident.html', title = 'Incident Report',
+        locations=locations, teachers = teachers,
+        demographics = demographics[0],
+        form = form)
+
+@app.route('/student', methods=['GET'])
+@login_required
+def studentpage():
+    form = StudentRegistrationForm()
+    return render_template('student.html',title = 'New Student Registration',form = form)
+    
 @app.route('/student', methods=['POST'])
 @login_required
 def newstudent():
     form = StudentRegistrationForm()
+    if form.validate():
+        print "valid"
+
+    print(form.errors)
+
     if request.method == 'POST':
+    #if request.method == 'POST' and form.validate_on_submit():
+
+       
         firstname = form.firstname.data
         middlename = form.middlename.data
         lastname = form.lastname.data
@@ -43,12 +112,25 @@ def newstudent():
         state = form.state.data
         grade = form.grade.data
 
-        db.students.insert({
-            'firstname':firstname,'middlename':middlename,'lastname':lastname,'studentid':studentid,'grade':grade,
-            'address1':address1,'address2':address2,'zipcode':zipcode,'state':state
-        })
+        #check if the student exists in the database 
+        student = mongo2.db.students.find({'studentid': studentid })
+        if student.count() == 0 :
+            #no student with a similar ID exists in the database so go ahead and save 
+            db.students.insert({
+                'firstname':firstname,'middlename':middlename,'lastname':lastname,'studentid':studentid,'grade':grade,
+                'address1':address1,'address2':address2,'zipcode':zipcode,'state':state
+            })
+
+            flash("New student saved successfully!", category='success')
         
-        return redirect('/')
+            return redirect('/student/' + studentid)
+        
+        else:
+            #Duplicate student ID 
+            flash("Duplicate entry ! A student with that ID exists in the database!", category='error')
+            return redirect('/student/' + studentid)
+    
+    return render_template('student.html', title='New Student Registration', form=form) 
 
 @app.route('/teacher',methods=['GET'])
 @login_required
@@ -65,18 +147,22 @@ def incident_report():
     form = IncidentForm()
 
     locations = mongo2.db.locations.find()
+    teachers = mongo2.db.teachers.find()
+    demographics = list(mongo2.db.students.find({'studentid':'1234'}))
 
     return render_template('incident.html', title = 'Incident Report',
-        locations=locations,
+        locations=locations, teachers = teachers,
+        demographics = demographics[0],
         form = form)
 
-
-@app.route('/incident',methods=['POST'])
+@app.route('/incident/<student_id>',methods=['POST'])
 @login_required
-def view_incident_report():
+def view_incident_report(student_id):
     form = IncidentForm()
     if request.method == 'POST':
+        incident_date = request.form['date']
         location = request.form['location']
+        #teacher = teacher.form['teacher']
         minor = request.form.getlist('minor')
         major = request.form.getlist('major')
         motivation = request.form.getlist('motivation')
@@ -84,14 +170,17 @@ def view_incident_report():
         others = request.form.getlist('others')
 
         db.incident.insert({
+            'student_id':student_id,
+            'incident_date':incident_date,
             'location':location,
+            #'teacher':teacher,
             'minor_problem_motivation': minor,
             'major_problem_motivation':major,
             'possible_motivation':motivation,
             'action_taken':action,
             'others_involved':others
         })
-    return redirect('/')
+    return redirect('/student/' + student_id)
 
 @app.route('/search',methods=['GET'])
 @login_required
@@ -127,23 +216,10 @@ def locations():
     return render_template('locations.html',
         locations=locations)
   
-@app.route('/student', methods=['GET'])
-@login_required
-def studentpage():
-    form = StudentRegistrationForm()
-    return render_template('student.html',title = 'New Student Registration',form = form)
-
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('login'))
-
-
-@app.route('/write', methods=['GET', 'POST'])
-@login_required
-def write():
-    return render_template('write.html')
-
 
 @app.route('/settings', methods=['GET', 'POST'])
 @login_required
@@ -161,3 +237,4 @@ def load_user(username):
     if not u:
         return None
     return User(u['_id'])
+

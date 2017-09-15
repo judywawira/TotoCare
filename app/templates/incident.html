@@ -1,193 +1,214 @@
 {% extends "base.html" %} {% block content %}
 
 <form action="" method="POST" name="form">
-    <div class="col-md-4 col-md-offset-4">
-        {{ form.hidden_tag() }}
-  
-        <div>
-        <select name="location">
-                {% for location in locations %}
-                <option value="{{ location }}">{{ location.name }}</option>
-                {% endfor %}
-        </select>
-        </div>
 
-        <div class="form-group">
-            <label class="control-label" for="minor">Minor problem behavior :</label> 
-            <div class="form-check">
-                    <input class="form-check-input" name="minor" type="checkbox" value="Defiance">
-                    Defiance         
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" name="minor" type="checkbox" value="Disrespect">
-                    Disrespect         
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" name="minor" type="checkbox" value="Physical Contact">
-                    Physical Contact         
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" name="minor" type="checkbox" value="Tardy">
-                    Tardy       
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" name="minor" type="checkbox" value="Inappropriate Language">
-                    Inappropriate Language       
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" name="minor" type="checkbox" value="Property Misues">
-                    Property Misues        
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" name="minor" type="checkbox" value="Dress Code">
-                    Dress Code      
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" name="minor" type="checkbox" value="Electronic Violation">
-                    Electronic Violation     
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" name="minor" type="checkbox" value="Other">
-                    Other      
-            </div>
-        </div>
+        <div class="col-md-10 col-md-offset-2">
+                {{ form.hidden_tag() }}
 
-        <div class="form-group">
-            <label class="control-label" for="major">Major problem behavior :</label> 
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="major" value="Defiance">
-                    Defiance
-            </div>
-           <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="major" value="Disrespect">
-                    Disrespect
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="major" value="Abusive Language">
-                    Abusive Language
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="major" value="Harassment">
-                    Harassment
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="major" value="Fighting">
-                    Fighting
-            </div>  
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="major" value="Electronic Violation">
-                    Electronic Violation
-            </div>  
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="major" value="Lying/Cheating">
-                    Lying/Cheating
-            </div>  
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="major" value="Dress Code">
-                    Dress Code
-            </div>  
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="major" value="Inappropriate display of affection">
-                    Inappropriate display of affection
-            </div>  
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="major" value="Other">
-                    Other
-            </div>            
-        </div>
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="firstname">First Name:</label>
+                        <div class="form-group col-md-6">
+                                {{demographics.firstname}}
+                        </div>
+                </div>
 
-        <div class="form-group">
-            <label class="control-label" for="motivation">Possible motivation :</label> 
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="motivation" value="Peer attention">
-                    Peer attention
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="motivation" value="Adult attention">
-                    Adult attention
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="motivation" value="Item/Activity avoid">
-                    Item/Activity avoid
-            </div>
-        </div>
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="firstname">Middle Name:</label>
+                        <div class="form-group col-md-6">
+                                {{demographics.middlename}}
+                        </div>
+                </div>
 
-        <div class="form-group">
-            <label class="control-label" for="action">Action Taken :</label> 
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="action" value="Time out/detention">
-                    Time out/detention
-            </div>       
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="action" value="Conference with student">
-                    Conference with student
-            </div>    
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="action" value="Loss of privileges">
-                    Loss of privileges
-            </div>    
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="action" value="Parent contact">
-                    Parent contact
-            </div>    
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="action" value="Individualized instruction">
-                    Individualized instruction
-            </div>    
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="action" value="In-school suspension">
-                    In-school suspension
-            </div>     
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="action" value="Out-of-school suspension">
-                    Out-of-school suspension
-            </div>     
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="action" value="Action pending">
-                    Action pending
-            </div>     
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="action" value="Other">
-                    Other
-            </div>    
-        </div>
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="firstname">Last Name:</label>
+                        <div class="form-group col-md-6">
+                                {{demographics.lastname}}
+                        </div>
+                </div>
 
-        <div class="form-group">
-            <label class="control-label" for="others">Others involved in the incident :</label> 
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="others" value="None">
-                    None
-            </div>  
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="others" value="Peers">
-                    Peers
-            </div>
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="others" value="Teacher">
-                    Teacher
-            </div> 
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="others" value="Staff">
-                    Staff
-            </div> 
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="others" value="Subtitute">
-                    Subtitute
-            </div>   
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="others" value="Unknown">
-                    Unknown
-            </div>  
-            <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="others" value="Other">
-                    Other
-            </div>  
-        </div>
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="firstname">Student ID:</label>
+                        <div class="form-group col-md-6">
+                                {{demographics.studentid}}
+                        </div>
+                </div>
 
-        <button class="btn btn-default" type="submit">Submit</button>
-    </div>
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="incident_date">Date of incident:</label>
+                        <div class="form-group col-md-6">
+                                <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" />
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="location">Location of incident:</label>
+                        <div class="form-group col-md-6">
+                                <select name="location">
+                                {% for location in locations %}
+                                <option value="{{ location }}">{{ location.name }}</option>
+                                {% endfor %}
+                        </select>
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="teacher">Teacher:</label>
+                        <div class="form-group col-md-6">
+                                <select name="teacher">
+                                {% for teacher in teachers %}
+                                <option value="{{ teacher }}">{{ teacher.name }}</option>
+                                {% endfor %}
+                        </select>
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="minor">Minor problem behavior :</label>
+                        <div class="form-group col-md-6">
+                                <div class="form-check">
+                                        <input class="form-check-input" name="minor" type="checkbox" value="Defiance"> Defiance
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" name="minor" type="checkbox" value="Disrespect">                                        Disrespect
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" name="minor" type="checkbox" value="Physical Contact">                                        Physical Contact
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" name="minor" type="checkbox" value="Tardy"> Tardy
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" name="minor" type="checkbox" value="Inappropriate Language">                                        Inappropriate Language
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" name="minor" type="checkbox" value="Property Misues">                                        Property Misues
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" name="minor" type="checkbox" value="Dress Code">                                        Dress Code
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" name="minor" type="checkbox" value="Electronic Violation">                                        Electronic Violation
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" name="minor" type="checkbox" value="Other"> Other
+                                </div>
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="major">Major problem behavior :</label>
+                        <div class="form-group col-md-6">
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="major" value="Defiance"> Defiance
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="major" value="Disrespect">                                        Disrespect
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="major" value="Abusive Language">                                        Abusive Language
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="major" value="Harassment">                                        Harassment
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="major" value="Fighting"> Fighting
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="major" value="Electronic Violation">                                        Electronic Violation
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="major" value="Lying/Cheating">                                        Lying/Cheating
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="major" value="Dress Code">                                        Dress Code
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="major" value="Inappropriate display of affection">                                        Inappropriate display of affection
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="major" value="Other"> Other
+                                </div>
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="motivation">Possible motivation :</label>
+                        <div class="form-group col-md-6">
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="motivation" value="Peer attention">                                        Peer attention
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="motivation" value="Adult attention">                                        Adult attention
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="motivation" value="Item/Activity avoid">                                        Item/Activity avoid
+                                </div>
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="action">Action Taken :</label>
+                        <div class="form-group col-md-6">
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="action" value="Time out/detention">                                        Time out/detention
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="action" value="Conference with student">                                        Conference with student
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="action" value="Loss of privileges">                                        Loss of privileges
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="action" value="Parent contact">                                        Parent contact
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="action" value="Individualized instruction">                                        Individualized instruction
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="action" value="In-school suspension">                                        In-school suspension
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="action" value="Out-of-school suspension">                                        Out-of-school suspension
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="action" value="Action pending">                                        Action pending
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="action" value="Other"> Other
+                                </div>
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" for="others">Others involved in the incident :</label>
+                        <div class="form-group col-md-6">
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="others" value="None"> None
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="others" value="Peers"> Peers
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="others" value="Teacher"> Teacher
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="others" value="Staff"> Staff
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="others" value="Subtitute">                                        Subtitute
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="others" value="Unknown"> Unknown
+                                </div>
+                                <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="others" value="Other"> Other
+                                </div>
+                        </div>
+                </div>
+
+                <button class="btn btn-default" type="submit">Submit</button>
+        </div>
 
 </form>
 
 {% endblock %}
-

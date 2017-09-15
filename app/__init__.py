@@ -6,6 +6,7 @@ from flask_pymongo import PyMongo
 
 from pymongo import MongoClient
 
+#global teacher
 
 app = Flask(__name__)
 
