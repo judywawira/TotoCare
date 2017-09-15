@@ -1,12 +1,28 @@
-from app import app, lm
+import json , ast
+from bson.json_util import dumps
+from bson import json_util
+
+from app import app, lm , mongo, mongo2, client, db
 from flask import request, redirect, render_template, url_for, flash
 from flask.ext.login import login_user, logout_user, login_required
-from .forms import LoginForm,StudentRegistrationForm
+from flask import jsonify
+
+from .forms import LoginForm, StudentRegistrationForm , IncidentForm
 from .user import User
 
-from pymongo import MongoClient
-client = MongoClient('localhost:27017')
-db = client.TotoCare
+#Describe Minor problem behaviour
+minor = ['Defiance','Disrespect','Physical Contact','Tardy','Inappropriate Language','Property Misues',
+'Dress Code','Electronic Violation','Other']
+
+major = ["Defiance",'Disrespect','Abusive Language','Harassment','Fighting','Electronic Violation','Property Damage',
+'Lying/Cheating','Dress Code','Inappropriate display of affection','Other']
+
+motivation = ['Peer attention','Adult attention','Item/Activity avoid','Peer attention','Adult attention','Item/Activity']
+
+action_taken = ['Time out/detention','Conference with student','Loss of privileges','Parent contact','Individualized instruction',
+'In-school suspension','Out-of-school suspension','Action pending','Other']
+
+others_involved = ['None','Peers','Teacher','Staff','Subtitute','Unknown','Other']
 
 @app.route('/')
 def home():
@@ -39,13 +55,62 @@ def newstudent():
         address2 = form.address2.data
         zipcode = form.zipcode.data
         state = form.state.data
+        grade = form.grade.data
 
         db.students.insert({
-            'firstname':firstname,'middlename':middlename,'lastname':lastname,'studentid':studentid,
+            'firstname':firstname,'middlename':middlename,'lastname':lastname,'studentid':studentid,'grade':grade,
             'address1':address1,'address2':address2,'zipcode':zipcode,'state':state
         })
         
         return redirect('/')
+
+@app.route('/teacher',methods=['GET'])
+@login_required
+def view_teacher():
+    teachers = mongo2.db.teachers.find()
+    return render_template('teacher.html',title='List of teachers',
+    teachers = teachers)
+
+@app.route('/incident',methods=['GET'])
+@login_required
+def incident_report():
+    form = IncidentForm()
+
+    locations = mongo2.db.locations.find()
+
+    return render_template('incident.html', title = 'Incident Report',
+        locations=locations,
+        minor = minor,
+        major = major,form = form)
+
+@app.route('/incident',methods=['POST'])
+@login_required
+def view_incident_report():
+    form = IncidentForm()
+    if request.method == 'POST':
+        location = form.location.data
+        minor = request.form.getlist('minor')
+        major = request.form.getlist('major')
+        motivation = request.form.getlist('motivation')
+        action = request.form.getlist('action')
+        others = request.form.getlist('others')
+
+        db.incident.insert({
+            'location':location,
+            'minor_problem_motivation': minor,
+            'major_problem_motivation':major,
+            'possible_motivation':motivation,
+            'action_taken':action,
+            'others_involved':others
+        })
+    return redirect('/')
+
+@app.route('/locations',methods=['GET'])
+@login_required
+def locations():
+    locations = mongo2.db.locations.find({})
+    return render_template('locations.html',
+        locations=locations)
   
 @app.route('/student', methods=['GET'])
 @login_required
@@ -71,9 +136,8 @@ def settings():
     return render_template('settings.html')
 
 
-
 """
-USed to reload the user object through different sessions by taking 
+Used to reload the user object through different sessions by taking 
 the unicode ID of user , returning the user object and if the user ID is invalid returns None 
 """
 @lm.user_loader

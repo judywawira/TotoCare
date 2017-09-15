@@ -29,3 +29,12 @@ class StudentRegistrationForm(Form):
     zipcode = StringField('Zip Code:',validators=[DataRequired()])
     state = StringField('State:',validators=[DataRequired()])
 
+class IncidentForm(Form):
+    """ Form to report a new student incident"""
+    location = StringField('Location :')
+    minor = StringField('Minor problem behavior :')
+    major = StringField('Major problem behavior :')
+    motivation = StringField('Possible motivation :')
+    action = StringField('Action Taken :')
+    others = StringField('Others involved in the incident :')
+    
