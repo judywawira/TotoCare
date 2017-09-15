@@ -34,11 +34,14 @@ def show_student_detail(student_id):
     demographics = list(mongo2.db.students.find({'studentid':student_id}))
 
     #search for incidents by student - the student ID MUST be unique
-    student_incidents = mongo2.db.incident.find({'student_id':student_id})
+    student_incidents = mongo2.db.incident.find({'student_id':student_id}).sort({'incident_date':1})
 
     count = student_incidents.count()
 
     #format the student incidences better 
+    for student_incident in student_incidents:
+        print(student_incident)
+
     """
     allincidences = []
     for student_incident in student_incidents:
@@ -49,7 +52,7 @@ def show_student_detail(student_id):
         
     print allincidences
     """
-    
+
     return render_template('summary.html',title="Student Summary",
     student_id = student_id,demographics = demographics[0],student_incidents = student_incidents,count = count)
 
@@ -64,7 +67,7 @@ def new_student_incident(student_id):
     demographics = list(mongo2.db.students.find({'studentid':student_id}))
     redirect('/student/incident/' +  student_id)
 
-@app.route('/student/incident/<student_id>',methods=['GET','POST'])
+@app.route('/student/incident/<student_id>',methods=['GET'])
 @login_required
 def incident_report_by_id_long(student_id):
     form = IncidentForm()
@@ -79,6 +82,33 @@ def incident_report_by_id_long(student_id):
         locations=locations, teachers = teachers,
         demographics = demographics[0],count = count,
         form = form)
+
+@app.route('/student/incident/<student_id>',methods=['POST'])
+@login_required
+def post_incident_report_by_id(student_id):
+    form = IncidentForm()
+    if request.method == 'POST':
+        incident_date = request.form['date']
+        location = request.form['location']
+        #teacher = teacher.form['teacher']
+        minor = request.form.getlist('minor')
+        major = request.form.getlist('major')
+        motivation = request.form.getlist('motivation')
+        action = request.form.getlist('action')
+        others = request.form.getlist('others')
+
+        db.incident.insert({
+            'student_id':student_id,
+            'incident_date':incident_date,
+            'location':location,
+            #'teacher':teacher,
+            'minor_problem_motivation': minor,
+            'major_problem_motivation':major,
+            'possible_motivation':motivation,
+            'action_taken':action,
+            'others_involved':others
+        })
+    return redirect('/student/' + student_id)
 
 @app.route('/incident/<student_id>',methods=['GET'])
 @login_required

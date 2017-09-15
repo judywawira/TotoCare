@@ -25,7 +25,7 @@
         <h4>Result count : {{count}} matching result </h4>
     </div>
     <div class="list-group">
-        {% for student in students %}
+        {% for student in students %}        
         <a href="student/{{student.studentid}}" class="list-group-item list-group-item-action">{{student.studentid}} : | 
           {{student.firstname}} {{student.middlename}}  {{student.lastname}}</a> {% endfor %}
     </div>

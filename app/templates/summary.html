@@ -24,7 +24,7 @@
     </table>
 
     <div>
-        <a class="btn btn-info" href="incident/{{demographics.studentid}}" class="list-group-item list-group-item-action">  New Incident Report </a>
+        <a class="btn btn-info" href="/incident/{{demographics.studentid}}" class="list-group-item list-group-item-action">  New Incident Report </a>
     </div>
 
     <br>
@@ -53,6 +53,7 @@
                                 <th>Location :</th>
                                 <th>Action Taken :</th>
                                 <th>Minor:</th>
+<th>Major:</th>
                             </tr>
                         </thead>
 
@@ -65,6 +66,7 @@
                                 <td>{{student_incident.location}}</td>
                                 <td>{{student_incident.action_taken}}</td>
                                 <td>{{student_incident.minor}}</td>
+<td>{{student_incident.major}}</td>
                             </tr>
 
                     {% endfor %}
