@@ -53,23 +53,25 @@
                                 <th>Location :</th>
                                 <th>Action Taken :</th>
                                 <th>Minor:</th>
-<th>Major:</th>
+                                <th>Major:</th>
+                                <th>Involvement:</th>
                             </tr>
                         </thead>
 
                         <tbody>
 
-                             {% for student_incident in student_incidents %}
+                            {% for student_incident in student_incidents %}
 
                             <tr>
                                 <td>{{student_incident.incident_date}}</td>
                                 <td>{{student_incident.location}}</td>
                                 <td>{{student_incident.action_taken}}</td>
-                                <td>{{student_incident.minor}}</td>
-<td>{{student_incident.major}}</td>
+                                <td>{{student_incident.minor_problem_motivation}}</td>
+                                <td>{{student_incident.major_problem_motivation}}</td>
+                                <td>{{student_incident.others_involved}}</td>
                             </tr>
 
-                    {% endfor %}
+                            {% endfor %}
 
                         </tbody>
 
@@ -81,6 +83,12 @@
 
 
             <tr>
+                <td>
+                    Resources available
+                </td>
+            </tr>
+
+
     </table>
 
 </div>
